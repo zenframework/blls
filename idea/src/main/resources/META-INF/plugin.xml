@@ -1,0 +1,62 @@
+<idea-plugin>
+  <id>org.zenframework.z8.blls.idea</id>
+  <name>blls</name>
+  <description>Языковой сервер для BL</description>
+
+  <depends>com.intellij.modules.platform</depends>
+  <depends>com.intellij.modules.lsp</depends>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <fileType
+      name="BL"
+      extensions="bl"
+      language="BL"
+      implementationClass="org.zenframework.z8.blls.idea.BlFileType"
+      fieldName="INSTANCE"
+    />
+
+    <lang.parserDefinition
+      language="BL"
+      implementationClass="org.zenframework.z8.blls.idea.BlParserDefinition"
+    />
+
+    <lang.syntaxHighlighterFactory
+      language="BL"
+      implementationClass="org.zenframework.z8.blls.idea.BlSyntaxHighlighterFactory"
+    />
+
+    <annotator
+      language="BL"
+      implementationClass="org.zenframework.z8.blls.idea.BlAnnotator"
+    />
+
+    <lang.braceMatcher
+      language="BL"
+      implementationClass="org.zenframework.z8.blls.idea.BlBraceMatcher"
+    />
+
+    <lang.commenter
+      language="BL"
+      implementationClass="org.zenframework.z8.blls.idea.BlCommenter"
+    />
+
+    <postStartupActivity
+      implementation="org.zenframework.z8.blls.idea.BllsStartupActivity"
+    />
+
+    <applicationConfigurable
+      parentId="tools"
+      id="org.zenframework.z8.blls.idea.BllsConfigurable"
+      displayName="blls"
+      instance="org.zenframework.z8.blls.idea.BllsConfigurable"
+    />
+
+    <applicationService
+      serviceImplementation="org.zenframework.z8.blls.idea.BllsState"
+    />
+
+    <platform.lsp.integrationProvider
+      implementation="org.zenframework.z8.blls.idea.BllsLspIntegrationProvider"
+    />
+  </extensions>
+</idea-plugin>

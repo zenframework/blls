@@ -1,0 +1,11 @@
+[libraries]
+jspecify = { group = "org.jspecify", name = "jspecify", version = "1.0.0" }
+lsp4j = { group = "org.eclipse.lsp4j", name = "org.eclipse.lsp4j", version = "1.0.0" }
+picocli = { group = "info.picocli", name = "picocli", version = "4.7.7" }
+json = { group = "tools.jackson.core", name = "jackson-databind", version = "3.2.2" }
+extraJavaModuleInfo = { group = "org.gradlex", name = "extra-java-module-info", version = "1.14.2" }
+
+[plugins]
+jflex = { id = "org.xbib.gradle.plugin.jflex", version = "3.0.2" }
+intellij = { id = "org.jetbrains.intellij.platform", version = "2.19.0" }
+grammarkit = { id = "org.jetbrains.intellij.platform.grammarkit", version = "2.19.0" }

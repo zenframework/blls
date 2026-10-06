@@ -1,0 +1,134 @@
+{
+  "name": "blls",
+  "description": "Языковой сервер для BL",
+  "version": "0.9.0",
+  "publisher": "z00000000z",
+  "icon": "blls.png",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zenframework/blls"
+  },
+  "engines": {
+    "vscode": "^1.91.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets"
+  ],
+  "main": "build/extension",
+  "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "blls",
+      "properties": {
+        "blls.run": {
+          "scope": "resource",
+          "type": "boolean",
+          "default": true,
+          "description": "Запускать языковой сервер"
+        },
+        "blls.path": {
+          "scope": "machine-overridable",
+          "type": "string",
+          "default": "",
+          "description": "Путь к blls",
+          "format": "path"
+        },
+        "blls.z8": {
+          "scope": "machine-overridable",
+          "type": "string",
+          "default": "",
+          "description": "Путь к z8",
+          "format": "path"
+        },
+        "blls.record": {
+          "scope": "application",
+          "type": "boolean",
+          "default": false,
+          "description": "Записывать запросы"
+        },
+        "blls.databaseVendor": {
+          "scope": "resource",
+          "type": "string",
+          "enum": [
+            "Oracle",
+            "SqlServer",
+            "Postgres",
+            "H2"
+          ],
+          "default": "Postgres",
+          "description": "База данных"
+        },
+        "blls.inlayHintBoolean": {
+          "scope": "resource",
+          "type": "boolean",
+          "default": true,
+          "description": "Вложенные подсказки: обозначать параметры типа bool"
+        },
+        "blls.inlayHintNonObvious": {
+          "scope": "resource",
+          "type": "boolean",
+          "default": true,
+          "description": "Вложенные подсказки: обозначать параметр, если его название не очевидно"
+        },
+        "blls.inlayHintImplicit": {
+          "scope": "resource",
+          "type": "boolean",
+          "default": false,
+          "description": "Вложенные подсказки: обозначать неявные вызовы"
+        },
+        "blls.codeLensSql": {
+          "scope": "resource",
+          "type": "boolean",
+          "default": true,
+          "description": "Просчитывать SQL-запросы"
+        },
+        "blls.trace.server": {
+          "scope": "window",
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Отслеживать общение между средой разработки и языковым сервером"
+        }
+      }
+    },
+    "languages": [
+      {
+        "id": "bl",
+        "extensions": [
+          ".bl"
+        ],
+        "configuration": "language-configuration.json",
+        "icon": {
+          "light": "bl.svg",
+          "dark": "bl.svg"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "bl",
+        "scopeName": "source.bl",
+        "path": "bl.tmLanguage.json"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "esbuild --bundle --sourcemap=external --minify --external:vscode extension.ts --outdir=build --platform=node --format=cjs"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "@types/vscode": "^1.91.0"
+  },
+  "dependencies": {
+    "@vscode/vsce": "^4.0.0",
+    "esbuild": "^0.28.2",
+    "vscode-languageclient": "^10.1.1"
+  }
+}

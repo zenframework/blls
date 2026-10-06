@@ -1,0 +1,11 @@
+# gradle
+.gradle/
+build/
+
+# vscode
+/vscode/node_modules/
+/vscode/*.vsix
+
+# idea
+/.idea/
+/.intellijPlatform/

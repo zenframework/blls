@@ -1,0 +1,328 @@
+{
+  parserClass="org.zenframework.z8.blls.idea.BlParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Bl"
+  psiImplClassSuffix="Impl"
+  psiPackage="org.zenframework.z8.blls.idea.psi"
+  psiImplPackage="org.zenframework.z8.blls.idea.psi.impl"
+
+  elementTypeHolderClass="org.zenframework.z8.blls.idea.psi.BlTypes"
+  elementTypeClass="org.zenframework.z8.blls.idea.psi.BlElementType"
+  tokenTypeClass="org.zenframework.z8.blls.idea.psi.BlTokenType"
+  generateTokenAccessors = true
+
+  tokens=[
+    COMMENT="comment"
+    COMMENT_BLOCK="block comment"
+    COMMENT_DOC="documentation"
+
+    EQUAL="="
+    PLUS="+"
+    PLUS_EQUAL="+="
+    MINUS="-"
+    MINUS_EQUAL="-="
+    ASTERISK="*"
+    ASTERISK_EQUAL="*="
+    SLASH="/"
+    SLASH_EQUAL="/="
+    PERCENT="%"
+    PERCENT_EQUAL="%="
+    EQUAL_EQUAL="=="
+    EXCLAMATION_EQUAL="!="
+    ARROW_R=">"
+    ARROW_R_EQUAL=">="
+    ARROW_L="<"
+    ARROW_L_EQUAL="<="
+    EXCLAMATION="!"
+    AMPERSAND="&"
+    AMPERSAND_AMPERSAND="&&"
+    PIPE="|"
+    PIPE_PIPE="||"
+    TILDA="~"
+    ACCENT="^"
+    COMMA=","
+    DOT="."
+    BRACE_L="{"
+    BRACE_R="}"
+    BRACKET_L="["
+    BRACKET_R="]"
+    PAREN_L="("
+    PAREN_R=")"
+    QUESTION="?"
+    COLON=":"
+    QUESTION_COLON="?:"
+    SEMICOLON=";"
+
+    KEYWORD_NULL="null"
+    KEYWORD_TRUE="true"
+    KEYWORD_FALSE="false"
+    KEYWORD_INSTANCEOF="instanceof"
+    KEYWORD_NEW="new"
+    KEYWORD_BREAK="break"
+    KEYWORD_CONTINUE="continue"
+    KEYWORD_RETURN="return"
+    KEYWORD_IF="if"
+    KEYWORD_ELSE="else"
+    KEYWORD_DO="do"
+    KEYWORD_WHILE="while"
+    KEYWORD_FOR="for"
+    KEYWORD_THROW="throw"
+    KEYWORD_TRY="try"
+    KEYWORD_CATCH="catch"
+    KEYWORD_FINALLY="finally"
+    KEYWORD_IMPORT="import"
+    KEYWORD_CLASS="class"
+    KEYWORD_EXTENDS="extends"
+    KEYWORD_ENUM="enum"
+    KEYWORD_RECORDS="records"
+    KEYWORD_OPERATOR="operator"
+    KEYWORD_THIS="this"
+    KEYWORD_SUPER="super"
+    KEYWORD_CONTAINER="container"
+    KEYWORD_PUBLIC="public"
+    KEYWORD_PROTECTED="protected"
+    KEYWORD_PRIVATE="private"
+    KEYWORD_STATIC="static"
+    KEYWORD_FINAL="final"
+    KEYWORD_VIRTUAL="virtual"
+    KEYWORD_AUTO="auto"
+
+    INTEGER="integer"
+    DECIMAL="decimal"
+    STRING="string"
+    SPECIAL="special"
+    IDENTIFIER="identifier"
+  ]
+}
+
+
+
+
+
+Source
+::= Import* (Klass | Enumeration)*
+
+Import
+::= KEYWORD_IMPORT DefinitionReference SEMICOLON
+
+Annotation
+::= BRACKET_L IDENTIFIER Expression? BRACKET_R
+
+Parameters
+::= (Parameter COMMA)* Parameter
+
+Parameter
+::= Definition IDENTIFIER
+
+Modifier
+::= KEYWORD_PUBLIC
+  | KEYWORD_PROTECTED
+  | KEYWORD_PRIVATE
+  | KEYWORD_STATIC
+  | KEYWORD_FINAL
+  | KEYWORD_VIRTUAL
+  | KEYWORD_AUTO
+
+Operation
+::= ASTERISK
+  | SLASH
+  | PERCENT
+  | PLUS
+  | MINUS
+  | ARROW_L
+  | ARROW_L_EQUAL
+  | ARROW_R
+  | ARROW_R_EQUAL
+  | EQUAL_EQUAL
+  | EXCLAMATION_EQUAL
+  | AMPERSAND
+  | AMPERSAND_AMPERSAND
+  | PIPE
+  | PIPE_PIPE
+  | TILDA
+  | ACCENT
+  | EQUAL
+  | EXCLAMATION
+
+Klass
+::= Annotation* Modifier* KEYWORD_CLASS IDENTIFIER (KEYWORD_EXTENDS DefinitionReference)? Declaration
+
+Declaration
+::= BRACE_L
+  ( Annotation* Modifier*
+    ( DeclarationField
+    | DeclarationMethod
+    | DeclarationPriority
+    | DeclarationCast
+    | DeclarationOperator
+    )
+  | Annotation* DeclarationInitialize
+  | DeclarationRecords
+  )* BRACE_R
+
+DeclarationField
+::= Definition IDENTIFIER SEMICOLON
+  | Definition IDENTIFIER EQUAL StatementExpression
+
+DeclarationInitialize
+::= Identifiers SEMICOLON
+  | Identifiers EQUAL StatementExpression
+  | Identifiers PLUS_EQUAL StatementExpression
+
+DeclarationMethod
+::= Definition IDENTIFIER PAREN_L Parameters? PAREN_R (StatementBlock | SEMICOLON)
+
+DeclarationPriority
+::= KEYWORD_OPERATOR PAREN_L Parameters? PAREN_R (StatementBlock | SEMICOLON)
+
+DeclarationCast
+::= KEYWORD_OPERATOR Definition PAREN_L Parameters? PAREN_R (StatementBlock | SEMICOLON)
+
+DeclarationOperator
+::= Definition KEYWORD_OPERATOR Operation PAREN_L Parameters? PAREN_R (StatementBlock | SEMICOLON)
+
+DeclarationRecords
+::= KEYWORD_RECORDS BRACE_L DeclarationRecordsChild* BRACE_R
+
+DeclarationRecordsChild
+::= Annotation* Modifier* IDENTIFIER EQUAL SPECIAL SEMICOLON
+
+Enumeration
+::= Annotation* Modifier* KEYWORD_ENUM IDENTIFIER BRACE_L EnumerationMembers BRACE_R
+
+EnumerationMembers
+::= (IDENTIFIER COMMA)* IDENTIFIER?
+
+
+
+
+
+Statement
+::= SEMICOLON
+  | StatementBlock
+  | StatementExpression
+  | StatementVariable
+  | KEYWORD_RETURN Expression? SEMICOLON
+  | KEYWORD_BREAK SEMICOLON
+  | KEYWORD_CONTINUE SEMICOLON
+  | KEYWORD_THROW Expression SEMICOLON
+  | KEYWORD_TRY StatementBlock StatementTryCatch* (KEYWORD_FINALLY StatementBlock)?
+  | KEYWORD_IF ExpressionParen Statement (KEYWORD_ELSE Statement)?
+  | KEYWORD_DO Statement KEYWORD_WHILE ExpressionParen SEMICOLON
+  | KEYWORD_WHILE ExpressionParen Statement
+  | KEYWORD_FOR PAREN_L SEMICOLON Expression SEMICOLON Expression PAREN_R Statement
+  | KEYWORD_FOR PAREN_L StatementVariable Expression SEMICOLON Expression PAREN_R Statement
+  | KEYWORD_FOR PAREN_L Expression SEMICOLON Expression SEMICOLON Expression PAREN_R Statement
+  | KEYWORD_FOR PAREN_L Definition IDENTIFIER COLON Expression PAREN_R Statement
+
+StatementBlock
+::= BRACE_L Statement* BRACE_R
+
+StatementExpression
+::= Expression SEMICOLON
+
+StatementVariable
+::= Definition IDENTIFIER (EQUAL Expression)? SEMICOLON
+
+StatementTryCatch
+::= KEYWORD_CATCH PAREN_L Definition IDENTIFIER PAREN_R StatementBlock
+
+
+
+
+
+Expressions
+::= (Expression COMMA)* Expression
+
+Expression
+::= Expression3
+  ( QUESTION_COLON Expression
+  | ASTERISK Expression
+  | SLASH Expression
+  | PERCENT Expression
+  | PLUS Expression
+  | MINUS Expression
+  | ARROW_L Expression
+  | ARROW_L_EQUAL Expression
+  | ARROW_R Expression
+  | ARROW_R_EQUAL Expression
+  | KEYWORD_INSTANCEOF Definition
+  | EQUAL_EQUAL Expression
+  | EXCLAMATION_EQUAL Expression
+  | AMPERSAND Expression
+  | AMPERSAND_AMPERSAND Expression
+  | PIPE Expression
+  | PIPE_PIPE Expression
+  | ACCENT Expression
+  | QUESTION Expression COLON Expression
+  | EQUAL Expression
+  | PLUS_EQUAL Expression
+  | MINUS_EQUAL Expression
+  | ASTERISK_EQUAL Expression
+  | SLASH_EQUAL Expression
+  | PERCENT_EQUAL Expression
+  )*
+
+Expression3
+::= Expression2
+  | PLUS Expression3
+  | MINUS Expression3
+  | EXCLAMATION Expression3
+  | TILDA Expression3
+
+Expression2
+::= Expression1
+  ( DOT IDENTIFIER (PAREN_L Expressions? PAREN_R)?
+  | BRACKET_L Expression BRACKET_R
+  )*
+
+Expression1
+::= ExpressionParen Expression3?
+  | KEYWORD_NULL
+  | KEYWORD_TRUE
+  | KEYWORD_FALSE
+  | INTEGER
+  | DECIMAL
+  | STRING
+  | SPECIAL
+  | KEYWORD_THIS
+  | KEYWORD_SUPER
+  | KEYWORD_CONTAINER
+  | IDENTIFIER (DOT IDENTIFIER)*
+    ( PAREN_L Expressions? PAREN_R
+    | DefinitionIndex* BRACE_L ExpressionArrayChildren BRACE_R
+    )?
+  | KEYWORD_NEW IdentifierDefinitionReference
+  | BRACE_L ExpressionArrayChildren BRACE_R
+  | KEYWORD_CLASS Declaration
+
+ExpressionParen
+::= PAREN_L Expression PAREN_R
+
+ExpressionArrayChildren
+::= (ExpressionArrayChild COMMA)* ExpressionArrayChild?
+
+ExpressionArrayChild
+::= Expression
+  | PAREN_L Expression COMMA Expression PAREN_R
+
+
+
+
+
+Definition
+::= DefinitionReference DefinitionIndex*
+
+DefinitionReference
+::= IdentifierDefinitionReference (DOT IdentifierDefinitionReference)*
+
+DefinitionIndex
+::= (BRACKET_L BRACKET_R) | (BRACKET_L Definition BRACKET_R)
+
+Identifiers
+::= IDENTIFIER (DOT IDENTIFIER)*
+
+IdentifierDefinitionReference
+::= IDENTIFIER

@@ -1,0 +1,51 @@
+package org.zenframework.z8.blls.evalsql;
+
+public class FormatOptions {
+  private int aggregationEnabled = 0;
+  private int readLockEnabled = 0;
+  private boolean orderBy = false;
+
+//	private Map<IField, String> aliases = new HashMap<IField, String>();
+//
+//	public String getFieldAlias(IField field) {
+//		return aliases.get(field);
+//	}
+//
+//	public void setFieldAlias(IField field, String alias) {
+//		aliases.put(field, alias);
+//	}
+
+  public boolean isAggregationEnabled() {
+    return aggregationEnabled == 0;
+  }
+
+  public void enableAggregation() {
+    if (aggregationEnabled > 0)
+      aggregationEnabled--;
+  }
+
+  public void disableAggregation() {
+    aggregationEnabled++;
+  }
+
+  public boolean isReadLockEnabled() {
+    return readLockEnabled == 0;
+  }
+
+  public void enableReadLock() {
+    if (readLockEnabled > 0)
+      readLockEnabled--;
+  }
+
+  public void disableReadLock() {
+    readLockEnabled++;
+  }
+
+  public boolean isOrderBy() {
+    return orderBy;
+  }
+
+  public void setOrderBy(boolean orderBy) {
+    this.orderBy = orderBy;
+  }
+}
